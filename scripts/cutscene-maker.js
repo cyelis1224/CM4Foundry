@@ -172,20 +172,21 @@ class CutsceneMakerWindow extends Application {
 
         html.find("#clearButton").click(() => {
             new Dialog({
-                title: "Clear All Actions",
+                title: "Confirm Clear",
                 content: "<p>Are you sure you want to clear all actions?</p>",
                 buttons: {
                     yes: {
+                        icon: "<i class='fas fa-check'></i>",
                         label: "Yes",
                         callback: () => {
-                            setCutsceneActions([]);
-                            updateActionList();
-                            ui.notifications.info("All actions cleared.");
+                            const cutsceneActions = []; // Initialize as an empty array
+                            setCutsceneActions(cutsceneActions); // Update the state
+                            updateActionList(cutsceneActions); // Refresh the UI
                         }
                     },
                     no: {
-                        label: "No",
-                        callback: () => {}
+                        icon: "<i class='fas fa-times'></i>",
+                        label: "No"
                     }
                 },
                 default: "no"
