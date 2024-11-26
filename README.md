@@ -11,7 +11,6 @@ A module for creating and managing cutscenes in Foundry Virtual Tabletop (VTT). 
 - **Macro Execution**: Run Foundry macros during cutscenes.
 - **Wait Actions**: Pause the cutscene for specified durations.
 - **Image Display**: Show images during the cutscene.
-- **Play Animations**: Trigger animations for tokens or between tokens.
 
 ## Installation
 
@@ -30,7 +29,6 @@ A module for creating and managing cutscenes in Foundry Virtual Tabletop (VTT). 
    - **Macro Execution**: Run specific macros at points in the cutscene.
    - **Wait Actions**: Pause the cutscene for a set duration.
    - **Image Display**: Show specific images.
-   - **Play Animations**: Trigger animations on tokens or between tokens.
 3. **Test Run**: Click the "Test Run" button to preview your cutscene. The Cutscene Maker window will minimize and restore automatically after the test run.
 4. **Export**: Save your cutscene script for later use.
 
