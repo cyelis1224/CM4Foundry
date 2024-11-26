@@ -7,10 +7,17 @@ A module for creating and managing cutscenes in Foundry Virtual Tabletop (VTT). 
 - **Camera Control**: Pan and zoom the camera to specific positions.
 - **Scene Transitions**: Switch between scenes seamlessly.
 - **Token Movement**: Move tokens to specified positions with animations.
+- **Token Say**: Make tokens say specific messages in chat.
+- **Play Audio**: Play audio files during the cutscene.
+- **Door State Control**: Open, close, or lock doors.
+- **Wait Actions**: Pause the cutscene for specified durations.
+- **Tile Movement**: Move tiles to specified positions.
 - **Screen Effects**: Add screen flashes and shakes for dramatic effect.
 - **Macro Execution**: Run Foundry macros during cutscenes.
-- **Wait Actions**: Pause the cutscene for specified durations.
 - **Image Display**: Show images during the cutscene.
+- **Fade Effects**: Fade the screen in or out over a specified duration.
+- **UI Control**: Hide or show the user interface.
+- **Show/Hide Tokens**: Toggle the visibility of tokens.
 
 ## Installation
 
@@ -25,12 +32,20 @@ A module for creating and managing cutscenes in Foundry Virtual Tabletop (VTT). 
    - **Camera Control**: Add camera movements and zoom actions.
    - **Scene Transitions**: Specify scenes to switch to during the cutscene.
    - **Token Movement**: Define token movements and rotations.
+   - **Token Say**: Make tokens say specific messages in chat.
+   - **Play Audio**: Play audio files during the cutscene.
+   - **Door State Control**: Open, close, or lock doors.
+   - **Wait Actions**: Pause the cutscene for a set duration.
+   - **Tile Movement**: Move tiles to specified positions.
    - **Screen Effects**: Add screen flashes and shakes.
    - **Macro Execution**: Run specific macros at points in the cutscene.
-   - **Wait Actions**: Pause the cutscene for a set duration.
    - **Image Display**: Show specific images.
+   - **Fade Effects**: Fade the screen in or out over a specified duration.
+   - **UI Control**: Hide or show the user interface.
+   - **Show/Hide Tokens**: Toggle the visibility of tokens.
 3. **Test Run**: Click the "Test Run" button to preview your cutscene. The Cutscene Maker window will minimize and restore automatically after the test run.
 4. **Export**: Save your cutscene script for later use.
+5. **Import**: Use the import feature to load previously saved cutscene scripts. Simply paste the script into the import dialog and click "Import" to reconstruct the actions.
 
 ## Contributing
 
