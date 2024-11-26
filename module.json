@@ -3,10 +3,40 @@
   "title": "Cutscene Maker",
   "description": "A module for creating and managing cutscenes in Foundry VTT.",
   "version": "2.0.0",
-  "esmodules": ["scripts/cutscene-maker.js"],
-  "styles": ["styles/styles.css"],
-  "minimumCoreVersion": "11",
-  "compatibleCoreVersion": "12",
-  "manifest": "https://raw.githubusercontent.com/cyelis1224/CM4Foundry/main/module.json",
-  "download": "https://github.com/cyelis1224/CM4Foundry/archive/refs/heads/main.zip"
+  "esmodules": [
+    "scripts/cutscene-maker.js"
+  ],
+  "styles": [
+    "styles/styles.css"
+  ],
+  "manifest": "https://raw.githubusercontent.com/cyelis1224/cutscene-maker/main/module.json",
+  "download": "https://github.com/cyelis1224/cutscene-maker/archive/refs/heads/main.zip",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "12"
+  },
+  "authors": [
+    {
+      "name": "Cyelis1224",
+      "email": "althomas731@gmail.com",
+      "url": "https://github.com/cyelis1224/",
+      "discord": "Cyelis1224",
+      "flags": {}
+    }
+  ],
+  "url": "https://github.com/cyelis1224/cutscene-maker",
+  "relationships": {
+    "requires": [
+      {
+        "id": "advanced-macros",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "socketlib",
+        "type": "module",
+        "compatibility": {}
+      }
+    ]
+  }
 }
