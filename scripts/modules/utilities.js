@@ -604,8 +604,10 @@ export function parseParamsFromScript(section, type) {
             params.targetTokenId = getMatch(/stretchTo\(canvas\.tokens\.get\("(.+?)"\)\)/, null);
             break;
         case "fadeOut":
+            params.fadeDuration = parseInt(getMatch(/fadeDuration: (\d+)/, 2000));
+            break;
         case "fadeIn":
-            params.fadeDuration = parseInt(getMatch(/duration: (\d+)/, 2000));
+            params.fadeDuration = parseInt(getMatch(/fadeDuration: (\d+)/, 2000));
             break;
         case "hideUI":
             params.duration = parseInt(getMatch(/duration: (\d+)/, 500));
@@ -693,10 +695,10 @@ export function generateDescription(type, section) {
             const animationDuration = getMatch(/duration\((\d+)\)/, 1000);
             return `Play Animation (URL: ${animationUrl}, Scale: ${animationScale}, Rotation: ${animationRotation}, Duration: ${animationDuration}ms)`;
         case "fadeOut":
-            const fadeOutDuration = getMatch(/duration: (\d+)/, 2000);
+            const fadeOutDuration = getMatch(/fadeDuration: (\d+)/, 2000);
             return `Fade Out (Duration: ${fadeOutDuration}ms)`;
         case "fadeIn":
-            const fadeInDuration = getMatch(/duration: (\d+)/, 2000);
+            const fadeInDuration = getMatch(/fadeDuration: (\d+)/, 2000);
             return `Fade In (Duration: ${fadeInDuration}ms)`;
         case "hideUI":
             const hideUIDuration = getMatch(/duration: (\d+)/, 500);
