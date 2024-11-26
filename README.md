@@ -4,7 +4,9 @@ A module for creating and managing cutscenes in Foundry Virtual Tabletop (VTT). 
 This module requires the Advanced Macros and Socketlib Modules in order to play the cutscene for all users. Once you export your script and save it as a macro be sure to set it to execute for All Players or Everyone But Me, whichever applies for your use case.
 
 These modules can be found at:
+
 https://github.com/mclemente/fvtt-advanced-macros
+
 https://github.com/manuelVo/foundryvtt-socketlib
 
 These are marked as required dependencies and will try to automatically install if not already installed.
