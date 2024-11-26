@@ -865,64 +865,180 @@ export function addImageDisplayAction(cutsceneActions, existingAction = null) {
 //     dialog.render(true);
 // }
 
-export function addFadeInAction(cutsceneActions, existingAction = null) {
-    console.log("Add Fade In Action");
-    const action = existingAction || {};
-    const params = { fadeDuration: 2000 };
-    const description = "Fade In";
-
-    if (existingAction) {
-        updateAction(cutsceneActions, existingAction.id, params, description);
-    } else {
-        const actionId = generateUniqueId();
-        cutsceneActions.push({ id: actionId, description, type: "fadeIn", params });
-    }
-    setCutsceneActions(cutsceneActions);
-    updateActionList(cutsceneActions);
-}
-
 export function addFadeOutAction(cutsceneActions, existingAction = null) {
     console.log("Add Fade Out Action");
     const action = existingAction || {};
-    const params = { fadeDuration: 2000 };
-    const description = "Fade Out";
+    const dialog = new Dialog({
+        title: "Fade Out",
+        content: `
+            <form>
+                <div class="form-group">
+                    <label for="fadeOutDuration">Fade Out Duration (ms):</label>
+                    <input type="number" id="fadeOutDuration" name="fadeOutDuration" value="${action.params ? action.params.fadeDuration : 2000}" step="100" style="width: 100%;">
+                </div>
+            </form>
+        `,
+        buttons: {
+            ok: {
+                label: "OK",
+                callback: html => {
+                    const fadeDuration = parseInt(html.find("#fadeOutDuration").val());
+                    const params = { fadeDuration };
+                    const description = `Fade Out (Duration: ${fadeDuration}ms)`;
+                    if (existingAction) {
+                        updateAction(cutsceneActions, existingAction.id, params, description);
+                    } else {
+                        const actionId = generateUniqueId();
+                        cutsceneActions.push({ id: actionId, description, type: "fadeOut", params });
+                    }
+                    setCutsceneActions(cutsceneActions);
+                    updateActionList(cutsceneActions);
+                }
+            },
+            cancel: {
+                label: "Cancel",
+                callback: () => {}
+            }
+        },
+        default: "ok",
+        render: html => {
+            console.log("Dialog rendered: Fade Out Action");
+        }
+    });
 
-    if (existingAction) {
-        updateAction(cutsceneActions, existingAction.id, params, description);
-    } else {
-        const actionId = generateUniqueId();
-        cutsceneActions.push({ id: actionId, description, type: "fadeOut", params });
-    }
-    setCutsceneActions(cutsceneActions);
-    updateActionList(cutsceneActions);
+    dialog.render(true);
+}
+
+export function addFadeInAction(cutsceneActions, existingAction = null) {
+    console.log("Add Fade In Action");
+    const action = existingAction || {};
+    const dialog = new Dialog({
+        title: "Fade In",
+        content: `
+            <form>
+                <div class="form-group">
+                    <label for="fadeInDuration">Fade In Duration (ms):</label>
+                    <input type="number" id="fadeInDuration" name="fadeInDuration" value="${action.params ? action.params.fadeDuration : 2000}" step="100" style="width: 100%;">
+                </div>
+            </form>
+        `,
+        buttons: {
+            ok: {
+                label: "OK",
+                callback: html => {
+                    const fadeDuration = parseInt(html.find("#fadeInDuration").val());
+                    const params = { fadeDuration };
+                    const description = `Fade In (Duration: ${fadeDuration}ms)`;
+                    if (existingAction) {
+                        updateAction(cutsceneActions, existingAction.id, params, description);
+                    } else {
+                        const actionId = generateUniqueId();
+                        cutsceneActions.push({ id: actionId, description, type: "fadeIn", params });
+                    }
+                    setCutsceneActions(cutsceneActions);
+                    updateActionList(cutsceneActions);
+                }
+            },
+            cancel: {
+                label: "Cancel",
+                callback: () => {}
+            }
+        },
+        default: "ok",
+        render: html => {
+            console.log("Dialog rendered: Fade In Action");
+        }
+    });
+
+    dialog.render(true);
 }
 
 export function addHideUIAction(cutsceneActions, existingAction = null) {
     console.log("Add Hide UI Action");
-    const actionId = generateUniqueId();
-    const description = "Hide UI";
-    const params = { duration: 500 };
+    const action = existingAction || {};
+    const dialog = new Dialog({
+        title: "Hide UI",
+        content: `
+            <form>
+                <div class="form-group">
+                    <label for="hideUIDuration">Hide UI Duration (ms):</label>
+                    <input type="number" id="hideUIDuration" name="hideUIDuration" value="${action.params ? action.params.duration : 500}" step="100" style="width: 100%;">
+                </div>
+            </form>
+        `,
+        buttons: {
+            ok: {
+                label: "OK",
+                callback: html => {
+                    const duration = parseInt(html.find("#hideUIDuration").val());
+                    const params = { duration };
+                    const description = `Hide UI (Duration: ${duration}ms)`;
+                    if (existingAction) {
+                        updateAction(cutsceneActions, existingAction.id, params, description);
+                    } else {
+                        const actionId = generateUniqueId();
+                        cutsceneActions.push({ id: actionId, description, type: "hideUI", params });
+                    }
+                    setCutsceneActions(cutsceneActions);
+                    updateActionList(cutsceneActions);
+                }
+            },
+            cancel: {
+                label: "Cancel",
+                callback: () => {}
+            }
+        },
+        default: "ok",
+        render: html => {
+            console.log("Dialog rendered: Hide UI Action");
+        }
+    });
 
-    if (existingAction) {
-        updateAction(existingAction.id, params, description);
-    } else {
-        cutsceneActions.push({ id: actionId, description, type: "hideUI", params });
-    }
-    updateActionList(cutsceneActions);
+    dialog.render(true);
 }
 
 export function addShowUIAction(cutsceneActions, existingAction = null) {
     console.log("Add Show UI Action");
-    const actionId = generateUniqueId();
-    const description = "Show UI";
-    const params = { duration: 500 };
+    const action = existingAction || {};
+    const dialog = new Dialog({
+        title: "Show UI",
+        content: `
+            <form>
+                <div class="form-group">
+                    <label for="showUIDuration">Show UI Duration (ms):</label>
+                    <input type="number" id="showUIDuration" name="showUIDuration" value="${action.params ? action.params.duration : 500}" step="100" style="width: 100%;">
+                </div>
+            </form>
+        `,
+        buttons: {
+            ok: {
+                label: "OK",
+                callback: html => {
+                    const duration = parseInt(html.find("#showUIDuration").val());
+                    const params = { duration };
+                    const description = `Show UI (Duration: ${duration}ms)`;
+                    if (existingAction) {
+                        updateAction(cutsceneActions, existingAction.id, params, description);
+                    } else {
+                        const actionId = generateUniqueId();
+                        cutsceneActions.push({ id: actionId, description, type: "showUI", params });
+                    }
+                    setCutsceneActions(cutsceneActions);
+                    updateActionList(cutsceneActions);
+                }
+            },
+            cancel: {
+                label: "Cancel",
+                callback: () => {}
+            }
+        },
+        default: "ok",
+        render: html => {
+            console.log("Dialog rendered: Show UI Action");
+        }
+    });
 
-    if (existingAction) {
-        updateAction(existingAction.id, params, description);
-    } else {
-        cutsceneActions.push({ id: actionId, description, type: "showUI", params });
-    }
-    updateActionList(cutsceneActions);
+    dialog.render(true);
 }
 
 export function showHideAction(cutsceneActions, existingAction = null) {
