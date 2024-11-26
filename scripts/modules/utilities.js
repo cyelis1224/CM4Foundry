@@ -26,13 +26,12 @@ export function generateUniqueId() {
     return `action-${actionCounter++}`;
 }
 
-export function updateActionList() {
-    const cutsceneActions = getCutsceneActions();
+export function updateActionList(cutsceneActions) {
     const actionList = $("#actionList");
     actionList.empty();
     cutsceneActions.forEach(action => {
-        if (!action.id || !action.description) {
-            console.error("Action is missing required properties:", action);
+        if (!action || !action.id || !action.description) {
+            console.error("Action is missing required properties or is undefined:", action);
             return;
         }
         actionList.append(`
@@ -502,6 +501,10 @@ export function parseScript(script) {
     const actions = script.split("\n\n").map(section => {
         const type = parseActionType(section);
         if (type === "dummy") {
+            // Check if the section is part of a known action
+            if (section.includes("flashEffect.style.transition") || section.includes("flashEffect.remove")) {
+                return null; // Ignore these parts as they are part of the screenFlash action
+            }
             // Create a custom action for unrecognized sections
             return { type: "custom", params: { script: section }, description: "Custom Action" };
         }
