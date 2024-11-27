@@ -21,39 +21,42 @@ export function addCameraPositionAction(cutsceneActions, existingAction = null) 
         currentZoom = action.params.scale;
     }
 
+    const dialogContent = `
+        <form>
+            <div class="form-group">
+                <label for="cameraX">Camera X:</label>
+                <input type="number" id="cameraX" name="cameraX" value="${currentX}" style="width: 100%;">
+            </div>
+            <div class="form-group">
+                <label for="cameraY">Camera Y:</label>
+                <input type="number" id="cameraY" name="cameraY" value="${currentY}" style="width: 100%;">
+            </div>
+            <div class="form-group">
+                <label for="cameraZoom">Zoom Level:</label>
+                <input type="number" id="cameraZoom" name="cameraZoom" value="${currentZoom}" step="0.1" style="width: 100%;">
+            </div>
+            <div class="form-group">
+                <label for="panDuration">Pan Duration (in milliseconds):</label>
+                <input type="number" id="panDuration" name="panDuration" value="${action.params ? action.params.duration : 1000}" step="100" style="width: 100%;">
+            </div>
+            <button type="button" id="getCurrentPosition" style="width: 100%;">Get Current Camera Position</button>
+        </form>
+        <p>Specify the camera position and zoom level, or copy the current screen position.</p>
+    `;
+
     const dialog = new Dialog({
         title: "Camera Position Action",
-        content: `
-            <form>
-                <div class="form-group">
-                    <label for="cameraX">Camera X:</label>
-                    <input type="number" id="cameraX" name="cameraX" value="${currentX}" style="width: 100%;">
-                </div>
-                <div class="form-group">
-                    <label for="cameraY">Camera Y:</label>
-                    <input type="number" id="cameraY" name="cameraY" value="${currentY}" style="width: 100%;">
-                </div>
-                <div class="form-group">
-                    <label for="cameraZoom">Zoom Level:</label>
-                    <input type="number" id="cameraZoom" name="cameraZoom" value="${currentZoom}" step="0.1" style="width: 100%;">
-                </div>
-                <div class="form-group">
-                    <label for="panDuration">Pan Duration (in milliseconds):</label>
-                    <input type="number" id="panDuration" name="panDuration" value="${action.params ? action.params.duration : 1000}" step="100" style="width: 100%;">
-                </div>
-                <button type="button" id="getCurrentPosition" style="width: 100%;">Get Current Camera Position</button>
-            </form>
-            <p>Specify the camera position and zoom level, or copy the current screen position.</p>
-        `,
+        content: dialogContent,
         buttons: {
             ok: {
                 label: "OK",
-                callback: html => {
+                callback: (html) => {
+                    const disablePanning = html.find('[name="disablePanning"]').is(':checked');
                     const x = parseFloat(html.find("#cameraX").val());
                     const y = parseFloat(html.find("#cameraY").val());
                     const scale = parseFloat(html.find("#cameraZoom").val());
                     const duration = parseInt(html.find("#panDuration").val());
-                    const params = { x, y, scale, duration };
+                    const params = { x, y, scale, duration, disablePanning };
                     const description = `Camera Position (X: ${x}, Y: ${y}, Zoom: ${scale}, Duration: ${duration}ms)`;
 
                     if (existingAction) {
@@ -150,14 +153,12 @@ export function addTokenMovementAction(cutsceneActions, existingAction = null) {
                 </div>
                 <button type="button" id="getSelectedToken" style="width: 100%;">Get currently selected token</button>
                 <div class="form-group">
-                    <label for="animatePan">Enable Screen Panning:</label>
-                    <input type="checkbox" id="animatePan" name="animatePan" value="1" ${action.params && action.params.animatePan ? 'checked' : ''} style="margin-top: 5px;">
-                    <p style="font-size: 0.8em; margin-top: 5px;">Camera Panning.</p>
+                    <label for="tokenX">Token X:</label>
+                    <input type="number" id="tokenX" name="tokenX" value="${action.params ? action.params.x : 0}" style="width: 100%;">
                 </div>
                 <div class="form-group">
-                    <label for="teleport">Teleport:</label>
-                    <input type="checkbox" id="teleport" name="teleport" ${action.params && action.params.teleport ? 'checked' : ''} style="margin-top: 5px;">
-                    <p style="font-size: 0.8em; margin-top: 5px;">Instantly move to the new position without animation.</p>
+                    <label for="tokenY">Token Y:</label>
+                    <input type="number" id="tokenY" name="tokenY" value="${action.params ? action.params.y : 0}" style="width: 100%;">
                 </div>
                 <div class="form-group">
                     <label for="tokenRotation">Token Rotation (in degrees):</label>
@@ -168,9 +169,16 @@ export function addTokenMovementAction(cutsceneActions, existingAction = null) {
                     <input type="number" id="movementSpeed" name="movementSpeed" value="${action.params ? action.params.speed : 200}" step="10" style="width: 100%;">
                 </div>
                 <div class="form-group">
+                    <label for="animatePan">Enable Screen Panning:</label>
+                    <input type="checkbox" id="animatePan" name="animatePan" ${action.params && action.params.animatePan ? 'checked' : ''} style="margin-top: 5px;">
+                </div>
+                <div class="form-group">
+                    <label for="teleport">Teleport:</label>
+                    <input type="checkbox" id="teleport" name="teleport" ${action.params && action.params.teleport ? 'checked' : ''} style="margin-top: 5px;">
+                </div>
+                <div class="form-group">
                     <label for="waitForCompletion">Wait for Completion:</label>
                     <input type="checkbox" id="waitForCompletion" name="waitForCompletion" ${waitForCompletionChecked ? 'checked' : ''} style="margin-top: 5px;">
-                    <p style="font-size: 0.8em; margin-top: 5px;">Wait for movement to complete before proceeding.</p>
                 </div>
             </form>
         `,
@@ -179,16 +187,17 @@ export function addTokenMovementAction(cutsceneActions, existingAction = null) {
                 label: "OK",
                 callback: html => {
                     const tokenId = html.find("#tokenId").val();
-                    const newPosition = { x: canvas.tokens.get(tokenId)?.x || 0, y: canvas.tokens.get(tokenId)?.y || 0 };
-                    const newRotation = parseFloat(html.find("#tokenRotation").val());
+                    const x = parseFloat(html.find("#tokenX").val());
+                    const y = parseFloat(html.find("#tokenY").val());
+                    const rotation = parseFloat(html.find("#tokenRotation").val());
+                    const speed = parseFloat(html.find("#movementSpeed").val());
                     const animatePan = html.find("#animatePan")[0].checked;
                     const teleport = html.find("#teleport")[0].checked;
-                    const speed = parseFloat(html.find("#movementSpeed").val());
                     const waitForCompletion = html.find("#waitForCompletion")[0].checked;
-                    const params = { id: tokenId, x: newPosition.x, y: newPosition.y, rotation: newRotation, animatePan, teleport, speed, waitForCompletion };
+                    const params = { id: tokenId, x, y, rotation, speed, animatePan, teleport, waitForCompletion };
                     const description = teleport
-                        ? `Token Teleport (X: ${params.x}, Y: ${params.y}, Rotation: ${params.rotation}°)`
-                        : `Token Movement (X: ${params.x}, Y: ${params.y}, Rotation: ${params.rotation}°, Speed: ${params.speed}px/s, Pan: ${params.animatePan ? 'Yes' : 'No'})`;
+                        ? `Token Teleport (X: ${x}, Y: ${y}, Rotation: ${rotation}°)`
+                        : `Token Movement (X: ${x}, Y: ${y}, Rotation: ${rotation}°, Speed: ${speed}px/s, Pan: ${animatePan ? 'Yes' : 'No'})`;
 
                     if (existingAction) {
                         updateAction(cutsceneActions, existingAction.id, params, description);
@@ -210,7 +219,10 @@ export function addTokenMovementAction(cutsceneActions, existingAction = null) {
             console.log("Dialog rendered: Token Movement Action");
             html.find("#getSelectedToken").click(() => {
                 if (canvas.tokens.controlled.length === 1) {
-                    html.find("#tokenId").val(canvas.tokens.controlled[0].id);
+                    const token = canvas.tokens.controlled[0];
+                    html.find("#tokenId").val(token.id);
+                    html.find("#tokenX").val(token.x);
+                    html.find("#tokenY").val(token.y);
                 } else {
                     ui.notifications.warn("Please select exactly one token.");
                 }
