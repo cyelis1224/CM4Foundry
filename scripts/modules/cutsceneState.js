@@ -6,4 +6,8 @@ export function getCutsceneActions() {
 
 export function setCutsceneActions(actions) {
     cutsceneActions = actions;
+}
+
+export function clearCutsceneActions() {
+    setCutsceneActions([]);
 } 

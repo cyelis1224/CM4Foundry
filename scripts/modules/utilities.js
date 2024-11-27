@@ -35,9 +35,9 @@ export function updateActionList(cutsceneActions) {
             return;
         }
         actionList.append(`
-            <li id="${action.id}" class="ui-state-default" style="display: flex; justify-content: space-between; align-items: center; padding: 5px 4px;">
+            <li id="${action.id}" class="ui-state-default" style="display: flex; justify-content: space-between; align-items: center; padding: 5px 4px; background: rgba(255, 255, 240, 0.8);">
                 <span class="drag-handle" style="cursor: move; margin-right: 10px;">&#9776;</span>
-                <span class="action-description" style="flex-grow: 1; max-width: 200px; overflow: overlay;">${action.description}</span>
+                <span class="action-description" style="flex-grow: 1; overflow: overlay;">${action.description}</span>
                 <span style="display: flex; gap: 5px;">
                     <button class="edit-button" data-id="${action.id}" style="min-width: 60px; max-width: 60px;">Edit</button>
                     <button class="remove-button" data-id="${action.id}" style="min-width: 60px; max-width: 60px;">Remove</button>
@@ -80,9 +80,6 @@ export function updateActionList(cutsceneActions) {
                     break;
                 case "imageDisplay":
                     addImageDisplayAction(cutsceneActions, action);
-                    break;
-                case "animation":
-                    addAnimationAction(cutsceneActions, action);
                     break;
                 case "fadeOut":
                     addFadeOutAction(cutsceneActions, action);
@@ -186,17 +183,27 @@ export function generateScript(type, params) {
                 })();
             `;
         case "switchScene":
+            console.log("Switch Scene Params:", params); // Debug log
             return `
                 // Switch Scene Action
                 (async function() {
                     try {
-                        const sceneId = "${params.sceneId}".replace("Scene.", "");
+                        const sceneId = "${params.sceneId}";
+                        console.log("Attempting to switch to scene:", sceneId); // Debug log
                         const scene = game.scenes.get(sceneId);
                         if (scene) {
-                            await scene.view();
-                            console.log("Switched to scene: ${params.sceneId}");
+                            await scene.activate();
+                            console.log("Successfully switched to scene:", scene.name);
                         } else {
-                            console.warn("Scene not found: ${params.sceneId}");
+                            console.warn("Scene not found with ID:", sceneId);
+                            // Try finding scene by name as fallback
+                            const sceneByName = game.scenes.find(s => s.name === sceneId);
+                            if (sceneByName) {
+                                await sceneByName.activate();
+                                console.log("Successfully switched to scene by name:", sceneByName.name);
+                            } else {
+                                console.error("Could not find scene by ID or name:", sceneId);
+                            }
                         }
                     } catch (error) {
                         console.error("Error in switch scene action:", error);
@@ -204,15 +211,41 @@ export function generateScript(type, params) {
                 })();
             `;
         case "tokenMovement":
+            console.log("Token Movement Params:", params);
             return `
                 // Token Movement Action
                 (async function() {
                     try {
                         const token = canvas.tokens.get("${params.id}");
                         if (token) {
-                            await token.document.update({ x: ${params.x}, y: ${params.y}, rotation: ${params.rotation} });
-                            ${params.animatePan ? `await canvas.animatePan({ x: ${params.x}, y: ${params.y}, duration: 1000 });` : ""}
-                            await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for movement to complete
+                            const startX = token.x;
+                            const startY = token.y;
+                            const distance = Math.sqrt(Math.pow(${params.x} - startX, 2) + Math.pow(${params.y} - startY, 2));
+                            const duration = distance / ${params.speed} * 1000; // Calculate duration based on speed
+                            
+                            if (${params.teleport}) {
+                                await token.document.update({ x: ${params.x}, y: ${params.y}, rotation: ${params.rotation} });
+                            } else {
+                                // Use Foundry's built-in animation system with speed
+                                await token.document.update({
+                                    x: ${params.x},
+                                    y: ${params.y},
+                                    rotation: ${params.rotation}
+                                }, {
+                                    animate: {
+                                        duration: duration,
+                                        movementSpeed: ${params.speed} // Add movement speed
+                                    }
+                                });
+
+                                // Wait for the movement to complete
+                                await new Promise(resolve => setTimeout(resolve, duration));
+                            }
+                            
+                            if (${params.animatePan}) {
+                                const panParams = { x: ${params.x}, y: ${params.y}, duration: duration };
+                                await canvas.animatePan(panParams);
+                            }
                         }
                     } catch (error) {
                         console.error("Error in token movement action:", error);

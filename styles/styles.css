@@ -44,23 +44,75 @@ textarea {
 }
 
 .window-app.minimized {
-    height: 40px;
+    height: 30px !important;
+    min-height: 30px !important;
     overflow: hidden;
-  }
-  
-  div#cutsceneContainer {
-    min-height: 420px;
-    overflow: overlay;
+}
+
+.window-app.minimized .window-content {
+    display: none;
+}
+
+.window-app.minimized .window-header {
+    margin-bottom: 0;
+}
+
+div#cutsceneContainer {
+    min-height: 300px;
 }
 
 div#availableActions {
-    height: 370px;
     overflow-y: scroll;
     overflow-x: clip;
     height: -webkit-fill-available;
 }
 
+#currentSequenceHeader, #availableActionsHeader {
+    position: sticky;
+    top: 0;
+    z-index: 1; /* Ensure the header is above other content */
+    padding: 6px 0; /* Add some padding for aesthetics */
+}
+
+#actionListWrapper {
+    overflow-y: auto;
+    max-height: calc(100% - 44px); /* Adjust the height to account for the header */
+}
+
+.cutscene-maker-button {
+    width: 97%;
+}
+
+div#availableActionsContainer {
+    overflow: hidden;
+    padding: 10px 0 0 0;
+}
+
+div#cutscene-maker-content {
+    padding: 0px 10px 0 10px;
+    margin: -10px 0 0 0px;
+}
+
+.ui-state-default {
+    height: 62.5px;
+}
+
 div#button-container {
-    height: -webkit-fill-available;
-    margin-bottom: 22px;
+    height: calc(100% - 42px);
+}
+
+button#clearButton {
+    margin: 0 8px;
+}
+
+button#exportButton {
+    margin: 0 8px;
+}
+
+button#testRunButton {
+    margin: 0 8px;
+}
+
+button#importButton {
+    margin: 0 8px;
 }

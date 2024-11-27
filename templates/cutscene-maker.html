@@ -1,23 +1,27 @@
 <!-- templates/cutscene-maker.html -->
-<div id="cutsceneContainer" style="display: flex; height: 90%; width: 100%;">
-    <div id="actionListContainer" style="flex: 1; border-right: 1px solid #ccc; padding: 10px; overflow-y: auto;">
-      <h3>Current Sequence</h3>
-      <ul id="actionList" class="sortable"></ul>
-    </div>
-    <div id="availableActionsContainer" style="flex: 1; padding: 10px;">
-      <h3>Available Actions</h3>
-        <div id="button-container">    
-          <div id="availableActions" class="cutscene-maker-buttons">
-            <!-- Buttons for available actions will be dynamically added here -->
-          </div>
+<div id="cutscene-maker-content" class="window-content">
+    <div id="cutsceneContainer" style="display: flex; height: 90%; width: 100%;">
+        <div id="actionListContainer" style="flex: 1; border-right: 1px solid #ccc; padding: 10px 10px 0 10px;">
+            <h3 id="currentSequenceHeader">Current Sequence</h3>
+            <div id="actionListWrapper" style="overflow-y: auto; max-height: calc(100% - 44px);">
+                <ul id="actionList" class="sortable"></ul>
+            </div>
+        </div>
+        <div id="availableActionsContainer" style="flex: 1; max-width: 400px;">
+            <h3 id="availableActionsHeader">Available Actions</h3>
+            <div id="button-container">    
+                <div id="availableActions" class="cutscene-maker-buttons">
+                    <!-- Buttons for available actions will be dynamically added here -->
+                </div>
+            </div>
         </div>
     </div>
-  </div>
-  <div id="cutsceneButtons" style="display: flex; justify-content: space-between; padding: 10px; max-height: 55px;">
-    <button id="clearButton" style="color: black;">Clear</button>
-    <button id="importButton" style="color: black;">Import Script</button>
-    <button id="exportButton" style="color: black;">Export Macro</button>
-    <button id="testRunButton" style="color: black;">Test Run</button>
-    <!-- <button id="playAnimationButton" style="color: black;">Play Animation</button> -->
-  </div>
+    <div id="cutsceneButtons" style="display: flex; justify-content: space-between; padding: 10px 30px 0 30px; max-height: 55px;">
+        <button id="clearButton">Clear</button>
+        <button id="importButton">Import Script</button>
+        <button id="exportButton">Export Macro</button>
+        <button id="testRunButton">Test Run</button>
+        <!-- <button id="playAnimationButton" style="color: black;">Play Animation</button> -->
+    </div>
+</div>
   
