@@ -2,7 +2,7 @@
   "id": "cutscene-maker",
   "title": "Cutscene Maker",
   "description": "A module for creating and managing cutscenes in Foundry VTT.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "esmodules": [
     "scripts/cutscene-maker.js"
   ],
